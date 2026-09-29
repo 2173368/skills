@@ -1,0 +1,4 @@
+interface:
+  display_name: "DMS 工单交互发送"
+  short_description: "交互收集凭据并安全创建阿里云 DMS 数据变更工单"
+  default_prompt: "使用 $dms-create-data-correct-order-local 交互收集参数并发送 DMS 数据变更工单。"

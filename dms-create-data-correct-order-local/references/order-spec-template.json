@@ -1,0 +1,48 @@
+{
+  "_说明": "工单规格模板。由 AI 按用户实际变更需求填写，再交给 create_order.py --spec 使用。所有 _ 开头字段仅为注释，脚本会忽略。",
+
+  "database_name": "目标数据库名称。脚本会遍历满足提交条件的实例找同名库并自动解析 DbId",
+
+  "skip_control_mode_check": false,
+  "_skip_control_mode_check": "置 true 则跳过管控模式筛选、退回 SearchDatabase 查库。仅在确知目标实例可提交、想省掉遍历耗时时使用",
+
+  "db_type": "mysql",
+  "_db_type": "决定是否强制 LIMIT。MySQL 系（mysql/mariadb/polardb/oceanbase/tidb/adb_mysql）强制；PostgreSQL、SQLServer 等只强制 WHERE。留空则真实运行时取查询结果的 DbType",
+
+  "target": null,
+  "_target": "通常留空由 database_name 解析。若已确知可填 {\"DbId\": 123, \"Logic\": false} 或 {\"InstanceId\": \"xxx\"}，两者不可同时出现",
+
+  "tid": null,
+  "_tid": "DMS 租户 ID，未知留 null",
+
+  "comment": "写明目标表、筛选条件、修改字段和业务原因，至少 15 字。审批人靠这段判断是否放行",
+  "_comment_禁用": "不要写「测试」「修改数据」「调整数据」等空泛描述，校验会拒绝",
+
+  "classify": "数据订正",
+  "_classify": "原因分类，服务端强制必填（缺失返回 403「原因分类不能为空」）。常见值：数据订正、业务需求、功能优化",
+
+  "estimate_affect_rows": 0,
+  "_estimate_affect_rows": "预估影响行数，须为 >=0 整数，应与 SQL 的 LIMIT 值相称",
+
+  "exec_mode": "COMMITOR",
+  "_exec_mode": "COMMITOR=审批通过后由提交人手动执行（默认，最安全）；AUTO=审批后自动执行；LAST_AUDITOR=末位审批人执行",
+
+  "sql_type": "TEXT",
+  "exec_sql": "UPDATE 表 SET 字段=新值 WHERE 精确条件 LIMIT n",
+  "_exec_sql": "TEXT 模式必填，UTF-8 不超过 1024 字节。UPDATE/DELETE 必须带 WHERE；MySQL 系还必须带 LIMIT 正整数。字面量或注释里的 LIMIT 不算",
+
+  "attachment_name": null,
+  "attachment_sql_verified": false,
+  "attachment_statement_count": null,
+  "_attachment": "sql_type=ATTACHMENT 时使用。脚本无法读取附件内容，必须人工核对后显式置 attachment_sql_verified=true，并填写语句条数",
+
+  "rollback_sql_type": "TEXT",
+  "rollback_sql": "把上述变更还原的语句，须基于真实原值",
+  "_rollback_sql": "每条执行 SQL 必须有一条对应回滚语句，条数须一致。原值未知时先查询，不得用占位值。DELETE 的回滚用 INSERT（无需 LIMIT），多条语句建议按相反顺序",
+
+  "rollback_attachment_name": null,
+  "rollback_attachment_statement_count": null,
+
+  "real_login_user_uid": null,
+  "_real_login_user_uid": "实际调用 API 的阿里云账号 UID，可选"
+}
