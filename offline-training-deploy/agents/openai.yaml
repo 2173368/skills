@@ -1,0 +1,4 @@
+interface:
+  display_name: "Offline Training Deploy"
+  short_description: "构建并部署 offline-training 三仓库"
+  default_prompt: "Use $offline-training-deploy to pull, build, deploy, and verify an offline-training task."
